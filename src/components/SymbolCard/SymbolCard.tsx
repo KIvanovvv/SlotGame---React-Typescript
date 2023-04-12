@@ -6,7 +6,7 @@ export const SymbolCard: React.FC<{ symbolPath: string; spinning: boolean }> = (
 ) => {
   return (
     <motion.div
-      animate={props.spinning ? { y: [-600, 0] } : { y: 0 }}
+      animate={props.spinning ? { y: [-600, -200] } : { y: 0 }}
       transition={
         props.spinning
           ? {
@@ -15,7 +15,7 @@ export const SymbolCard: React.FC<{ symbolPath: string; spinning: boolean }> = (
               repeatType: "loop",
               stiffness: 0,
             }
-          : {}
+          : { stiffness: 0 }
       }
       className={`${classes.container} ${classes.spin}`}
     >
