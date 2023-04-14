@@ -1,12 +1,41 @@
 .container {
   display: flex;
+  position: relative;
 }
 
 .app {
   height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 30px;
   align-items: center;
   justify-content: center;
   background-color: #000;
+}
+.btn_start {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 10px;
+  border-radius: 15px;
+}
+.btn_start:hover {
+  cursor: pointer;
+  background-color: gold;
+}
+
+.icon_spin {
+  color: purple;
+}
+.icon_spin_active {
+  color: purple;
+  animation: rotation 0.3s linear;
+}
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
 }

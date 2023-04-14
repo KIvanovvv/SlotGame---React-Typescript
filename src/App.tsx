@@ -1,12 +1,11 @@
 import classes from "./App.module.css";
 import { Reel } from "./components/Reel/Reel";
 import { useState } from "react";
-import banana from "./assets/banana.png";
-import berries from "./assets/berries.png";
-import crown from "./assets/crown.png";
-import diamond from "./assets/diamond.png";
-import hat from "./assets/hat.png";
-import plum from "./assets/plum.png";
+import reelSound from "./assets/sounds/reelSound.wav";
+import thirdReelSound from "./assets/sounds/3rdreel.wav";
+import reelBg from "./assets/sounds/reelBg.wav";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRotate } from "@fortawesome/free-solid-svg-icons";
 import {
   loosingOutcome,
   symbols_data,
@@ -26,6 +25,7 @@ function App() {
   const [reelOneSpinning, setReelOneSpinning] = useState(false);
   const [reelTwoSpinning, setReelTwoSpinning] = useState(false);
   const [reelThreeSpinning, setReelThreeSpinning] = useState(false);
+  const [startClicked, setStartClicked] = useState(false);
 
   function shuffleArray(array: string[]) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -40,15 +40,18 @@ function App() {
     winningIndex: number
   ) => {
     setReelOneSpinning(true);
+
     setReelOneSymbols(shuffleArray([...symbols_data]));
     if (playerWin) {
       setTimeout(() => {
         setReelOneSymbols(winningOutcome[winningIndex].combination[0]);
+        new Audio(reelSound).play();
         setReelOneSpinning(false);
       }, 1000);
     } else {
       setTimeout(() => {
         setReelOneSymbols(loosingOutcome[loosingIndex].combination[0]);
+        new Audio(reelSound).play();
         setReelOneSpinning(false);
       }, 1000);
     }
@@ -59,17 +62,20 @@ function App() {
     winningIndex: number
   ) => {
     setReelTwoSpinning(true);
+
     setReelTwoSymbols(shuffleArray([...symbols_data]));
     if (playerWin) {
       setTimeout(() => {
         setReelTwoSymbols(winningOutcome[winningIndex].combination[1]);
+        new Audio(reelSound).play();
         setReelTwoSpinning(false);
-      }, 1700);
+      }, 1500);
     } else {
       setTimeout(() => {
         setReelTwoSymbols(loosingOutcome[loosingIndex].combination[1]);
+        new Audio(reelSound).play();
         setReelTwoSpinning(false);
-      }, 1700);
+      }, 1500);
     }
   };
 
@@ -79,21 +85,27 @@ function App() {
     winningIndex: number
   ) => {
     setReelThreeSpinning(true);
+
     setReelThreeSymbols(shuffleArray([...symbols_data]));
     if (playerWin) {
       setTimeout(() => {
         setReelThreeSymbols(winningOutcome[winningIndex].combination[2]);
+        new Audio(thirdReelSound).play();
         setReelThreeSpinning(false);
-      }, 2200);
+        setStartClicked(false);
+      }, 2000);
     } else {
       setTimeout(() => {
         setReelThreeSymbols(loosingOutcome[loosingIndex].combination[2]);
+        new Audio(thirdReelSound).play();
         setReelThreeSpinning(false);
-      }, 2200);
+        setStartClicked(false);
+      }, 2000);
     }
   };
-
+  //[1,2,3...100]
   const onStartHandler = () => {
+    setStartClicked(true);
     const winOdd = Math.trunc(Math.random() * 3);
     let playerWin = false;
     let loosingOutcomeIndex = 0;
@@ -105,26 +117,39 @@ function App() {
     if (!playerWin) {
       loosingOutcomeIndex = Math.trunc(Math.random() * loosingOutcome.length);
     }
-
+    new Audio(reelBg).play();
     startFirstReel(playerWin, loosingOutcomeIndex, winningOutcomeIndex);
     startSecondReel(playerWin, loosingOutcomeIndex, winningOutcomeIndex);
     startThirdReel(playerWin, loosingOutcomeIndex, winningOutcomeIndex);
-    // setReelOneSymbols((data) => shuffleArray([...data]));
-    // console.log(reelOneSymbols);
-
-    setReelTwoSymbols((data) => shuffleArray([...data]));
-    setReelThreeSymbols((data) => shuffleArray([...data]));
   };
 
   return (
     <div className={classes.app}>
       <div className={classes.container}>
-        <Reel reelSpinning={reelOneSpinning} symbols={reelOneSymbols} />
-        <Reel reelSpinning={reelTwoSpinning} symbols={reelTwoSymbols} />
-        <Reel reelSpinning={reelThreeSpinning} symbols={reelThreeSymbols} />
+        <Reel
+          reelSpinning={reelOneSpinning}
+          symbols={reelOneSymbols}
+          reelOrder={0}
+        />
+        <Reel
+          reelSpinning={reelTwoSpinning}
+          symbols={reelTwoSymbols}
+          reelOrder={1}
+        />
+        <Reel
+          reelSpinning={reelThreeSpinning}
+          symbols={reelThreeSymbols}
+          reelOrder={2}
+        />
       </div>
       <button className={classes.btn_start} onClick={onStartHandler}>
-        Start
+        <FontAwesomeIcon
+          icon={faRotate}
+          className={
+            startClicked ? classes.icon_spin_active : classes.icon_spin
+          }
+          size="5x"
+        />
       </button>
     </div>
   );

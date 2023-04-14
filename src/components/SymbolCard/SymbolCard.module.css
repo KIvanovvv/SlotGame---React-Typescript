@@ -14,3 +14,15 @@
   max-height: 100%;
   object-fit: contain;
 }
+.winning {
+  animation: winning 0.7s infinite linear;
+  background-color: rgb(91, 210, 91);
+}
+@keyframes winning {
+  from {
+    trnasfrom: scale(1);
+  }
+  to {
+    transform: scale(1.3);
+  }
+}
