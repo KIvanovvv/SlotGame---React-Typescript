@@ -5,27 +5,29 @@ export const Reel: React.FC<{
   reelSpinning: boolean;
   symbols: string[];
   reelOrder: number;
+  winningLine: number[];
+  payout: number;
+  winningClass: boolean;
 }> = (props) => {
-  const winningLine = [1, 2, 3, 4, 5];
-  let winMark: boolean[];
-  if (winningLine.includes(1)) {
-    winMark = [true];
+  const winMark: boolean[] = [false, false, false];
+  if (props.winningLine.includes(1)) {
+    winMark.splice(0, 0, true);
   }
-  if (winningLine.includes(2)) {
-    winMark = [true, true];
+  if (props.winningLine.includes(2)) {
+    winMark.splice(1, 0, true);
   }
-  if (winningLine.includes(3)) {
-    winMark = [true, true, true];
+  if (props.winningLine.includes(3)) {
+    winMark.splice(2, 0, true);
   }
-  if (winningLine.includes(4)) {
-    if (props.reelOrder === 0) winMark = [true];
-    if (props.reelOrder === 1) winMark = [false, true];
-    if (props.reelOrder === 2) winMark = [false, false, true];
+  if (props.winningLine.includes(4)) {
+    if (props.reelOrder === 0) winMark.splice(0, 1, true);
+    if (props.reelOrder === 1) winMark.splice(1, 1, true);
+    if (props.reelOrder === 2) winMark.splice(2, 1, true);
   }
-  if (winningLine.includes(5)) {
-    if (props.reelOrder === 0) winMark = [false, false, true];
-    if (props.reelOrder === 1) winMark = [false, true];
-    if (props.reelOrder === 2) winMark = [true];
+  if (props.winningLine.includes(5)) {
+    if (props.reelOrder === 0) winMark.splice(2, 1, true);
+    if (props.reelOrder === 1) winMark.splice(1, 1, true);
+    if (props.reelOrder === 2) winMark.splice(0, 1, true);
   }
 
   return (
@@ -36,6 +38,7 @@ export const Reel: React.FC<{
           spinning={props.reelSpinning}
           key={Math.random() * 100}
           winMark={winMark[i] ? true : false}
+          winningClass={props.winningClass}
         />
       ))}
     </div>

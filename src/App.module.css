@@ -1,16 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .container {
   display: flex;
   position: relative;
 }
-
-.app {
+.wrapper {
   height: 100vh;
+  background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20220512/pngtree-cartoon-dragon-on-gold-image_1298137.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.app_display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  background-image: radial-gradient(
+    circle farthest-corner at 10% 20%,
+    rgba(255, 209, 67, 1) 0%,
+    rgba(255, 145, 83, 1) 90%
+  );
+  border-radius: 5px;
+  width: 400px;
+  padding: 20px;
+}
+.payout {
+  margin: 0;
+  font-size: 30px;
+}
+.app {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
   gap: 30px;
   align-items: center;
   justify-content: center;
-  background-color: #000;
 }
 .btn_start {
   background-color: transparent;
@@ -22,6 +55,9 @@
 .btn_start:hover {
   cursor: pointer;
   background-color: gold;
+}
+.payout {
+  color: purple;
 }
 
 .icon_spin {

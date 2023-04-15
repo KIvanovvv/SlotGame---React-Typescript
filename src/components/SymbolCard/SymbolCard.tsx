@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import classes from "./SymbolCard.module.css";
 import { motion } from "framer-motion";
 
@@ -6,19 +6,38 @@ export const SymbolCard: React.FC<{
   symbolPath: string;
   spinning: boolean;
   winMark: boolean;
+  winningClass: boolean;
 }> = (props) => {
   const [imgClass, setImgClass] = useState(classes.img);
-
+  const [containerClass, setContainerClass] = useState(classes.container);
   const addingWinningClass = () => {
     if (props.winMark) {
-      setImgClass(`${classes.img} ${classes.winning}`);
+      setContainerClass(
+        `${classes.container} ${classes.winning} ${classes.spin}`
+      );
+    } else {
+      setContainerClass(`${classes.container} ${classes.spin}`);
+    }
+  };
+  useMemo(() => {
+    if (props.winningClass) {
+      addingWinningClass();
+    }
+  }, [props.winningClass]);
+
+  const addingWinningClassImg = () => {
+    if (props.winMark) {
+      setImgClass(`${classes.img} ${classes.img_winning}`);
     } else {
       setImgClass(classes.img);
     }
   };
-  setTimeout(() => {
-    addingWinningClass();
-  }, 1000);
+  useMemo(() => {
+    if (props.winningClass) {
+      addingWinningClassImg();
+    }
+  }, [props.winningClass]);
+
   return (
     <motion.div
       animate={props.spinning ? { y: [-600, -200] } : { y: 0 }}
@@ -32,7 +51,7 @@ export const SymbolCard: React.FC<{
             }
           : { stiffness: 0 }
       }
-      className={`${classes.container} ${classes.spin} `}
+      className={containerClass}
     >
       <img src={props.symbolPath} alt="symbol" className={imgClass} />
     </motion.div>

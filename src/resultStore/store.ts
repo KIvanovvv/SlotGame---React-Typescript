@@ -37,6 +37,7 @@ export const loosingOutcome = [
       [banana, plum, berries, hat, plum, berries, hat, plum, berries],
     ],
     payout: 0,
+    winningLine: [0],
   },
   {
     combination: [
@@ -45,6 +46,7 @@ export const loosingOutcome = [
       [diamond, berries, plum, crown, berries, hat, plum, diamond, hat],
     ],
     payout: 0,
+    winningLine: [0],
   },
   {
     combination: [
@@ -53,6 +55,7 @@ export const loosingOutcome = [
       [banana, plum, crown, hat, plum, diamond, berries, hat, diamond],
     ],
     payout: 0,
+    winningLine: [0],
   },
   {
     combination: [
@@ -61,6 +64,7 @@ export const loosingOutcome = [
       [hat, berries, crown, plum, diamond, hat, plum, banana, hat],
     ],
     payout: 0,
+    winningLine: [0],
   },
   {
     combination: [
@@ -69,6 +73,7 @@ export const loosingOutcome = [
       [diamond, berries, plum, hat, plum, crown, hat, banana, hat],
     ],
     payout: 0,
+    winningLine: [0],
   },
   {
     combination: [
@@ -77,6 +82,7 @@ export const loosingOutcome = [
       [diamond, hat, berries, plum, hat, diamond, berries, crown, plum],
     ],
     payout: 0,
+    winningLine: [0],
   },
   {
     combination: [
@@ -85,6 +91,7 @@ export const loosingOutcome = [
       [hat, berries, plum, diamond, hat, plum, hat, crown, banana],
     ],
     payout: 0,
+    winningLine: [0],
   },
 ];
 
@@ -95,7 +102,8 @@ export const winningOutcome = [
       [diamond, hat, plum, crown, berries, plum, diamond, hat, plum],
       [berries, hat, plum, diamond, crown, hat, berries, diamond, hat],
     ],
-    payout: 0,
+    payout: 4,
+    winningLine: [3],
   },
   {
     combination: [
@@ -103,7 +111,8 @@ export const winningOutcome = [
       [plum, crown, hat, berries, plum, diamond, hat, crown, berries],
       [plum, berries, plum, hat, diamond, crown, berries, plum, hat],
     ],
-    payout: 0,
+    payout: 4,
+    winningLine: [1],
   },
   {
     combination: [
@@ -111,7 +120,8 @@ export const winningOutcome = [
       [plum, plum, plum, crown, berries, plum, diamond, crown, hat],
       [berries, plum, plum, hat, diamond, berries, hat, crown, banana],
     ],
-    payout: 0,
+    payout: 8,
+    winningLine: [2, 3],
   },
   {
     combination: [
@@ -119,7 +129,8 @@ export const winningOutcome = [
       [hat, plum, plum, berries, diamond, crown, berries, hat, plum],
       [diamond, crown, plum, plum, hat, diamond, berries, crown, hat],
     ],
-    payout: 0,
+    payout: 4,
+    winningLine: [4],
   },
   {
     combination: [
@@ -127,6 +138,25 @@ export const winningOutcome = [
       [plum, plum, crown, berries, diamond, plum, hat, crown, diamond],
       [plum, diamond, hat, berries, crown, hat, plum, diamond, berries],
     ],
-    payout: 0,
+    payout: 4,
+    winningLine: [5],
+  },
+  {
+    combination: [
+      [plum, plum, plum, plum, hat, crown, plum, diamond, hat],
+      [plum, plum, crown, berries, diamond, plum, hat, crown, diamond],
+      [plum, plum, plum, berries, crown, hat, plum, diamond, berries],
+    ],
+    payout: 16,
+    winningLine: [1,2,4,5],
+  },
+  {
+    combination: [
+      [plum, plum, plum, plum, hat, crown, plum, diamond, hat],
+      [plum, plum, plum, berries, diamond, plum, hat, crown, diamond],
+      [plum, plum, plum, berries, crown, hat, plum, diamond, berries],
+    ],
+    payout: 20,
+    winningLine: [1,2,3,4,5],
   },
 ];
