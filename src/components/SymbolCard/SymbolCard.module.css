@@ -19,7 +19,7 @@
   animation: winning 1.2s 2 linear;
 }
 .winning {
-  background-color: rgb(91, 210, 91);
+  background-color: rgb(35, 219, 35);
 }
 @keyframes winning {
   0% {

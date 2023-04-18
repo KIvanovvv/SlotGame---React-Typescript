@@ -14,6 +14,7 @@ import {
   symbols_data,
   winningOutcome,
 } from "./resultStore/store";
+import BetPicker from "./components/BetPicker/BetPicker";
 
 function App() {
   const [reelOneSymbols, setReelOneSymbols] = useState(
@@ -37,6 +38,12 @@ function App() {
   const [startClicked, setStartClicked] = useState(false);
   const [payoutMessage, setPayoutMessage] = useState("Spin the reels");
   const [winningClass, setWinningClass] = useState(false);
+  const [credits, setCredits] = useState(1000);
+  const [bet, setBet] = useState(1);
+
+  const betHandler = (bet: number) => {
+    setBet(bet);
+  };
 
   function shuffleArray(array: string[]) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -115,10 +122,14 @@ function App() {
         setStartClicked(false);
         setTimeout(() => {
           setPayoutMessage(
-            "You won " + winningOutcome[winningIndex].payout + " coins!"
+            "You won " + winningOutcome[winningIndex].payout * bet + " coins!"
           );
+
           new Audio(winSound).play();
           setWinningClass(true);
+          setCredits(
+            (curr) => curr + winningOutcome[winningIndex].payout * bet
+          );
         }, 500);
       }, 2000);
     } else {
@@ -135,6 +146,7 @@ function App() {
   };
   const onStartHandler = () => {
     setStartClicked(true);
+    setCredits((curr) => curr - bet);
     setWinningClass(false);
     const winOdd = Math.trunc(Math.random() * 3);
     let playerWin = false;
@@ -184,19 +196,26 @@ function App() {
               winningClass={winningClass}
             />
           </div>
-          <button
-            className={classes.btn_start}
-            onClick={onStartHandler}
-            disabled={reelThreeSpinning ? true : false}
-          >
-            <FontAwesomeIcon
-              icon={faRotate}
-              className={
-                startClicked ? classes.icon_spin_active : classes.icon_spin
-              }
-              size="5x"
-            />
-          </button>
+          <div className={classes.actions}>
+            <BetPicker betHandler={betHandler} bet={bet} />
+            <button
+              className={classes.btn_start}
+              onClick={onStartHandler}
+              disabled={reelThreeSpinning ? true : false}
+            >
+              <FontAwesomeIcon
+                icon={faRotate}
+                className={
+                  startClicked ? classes.icon_spin_active : classes.icon_spin
+                }
+                size="5x"
+              />
+            </button>
+            <div className={classes.credits_container}>
+              <p className={classes.credits_headline}>Credits</p>
+              <p className={classes.credits_sum}>{credits}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,26 @@
+.container {
+  align-self: center;
+  width: 150px;
+}
+
+.multiplier {
+  font-size: 14px;
+  width: 40px;
+  font-weight: bold;
+  background-color: purple;
+  color: white;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.clicked {
+  background-color: rgb(35, 219, 35);
+}
+.multiplier:hover {
+  cursor: pointer;
+}
+.credit {
+  font-size: 12px;
+  color: white;
+  text-align: center;
+}
