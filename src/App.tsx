@@ -1,6 +1,6 @@
 import classes from "./App.module.css";
 import { Reel } from "./components/Reel/Reel";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   reelSound,
   reelBg,
@@ -15,6 +15,7 @@ import {
   winningOutcome,
 } from "./resultStore/store";
 import BetPicker from "./components/BetPicker/BetPicker";
+import oddsGenerator from "./utils/oddsGenerator";
 
 function App() {
   const [reelOneSymbols, setReelOneSymbols] = useState(
@@ -40,6 +41,7 @@ function App() {
   const [winningClass, setWinningClass] = useState(false);
   const [credits, setCredits] = useState(1000);
   const [bet, setBet] = useState(1);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const betHandler = (bet: number) => {
     setBet(bet);
@@ -55,16 +57,21 @@ function App() {
   const startFirstReel = (
     playerWin: boolean,
     loosingIndex: number,
-    winningIndex: number
+    winningIndex: number,
+    outcome: {
+      combination: string[][];
+      winningLine: number[];
+      payout: number;
+    }
   ) => {
     setReelOneSpinning(true);
     setPayoutMessage("Good luck!");
     setReelOneSymbols(shuffleArray([...symbols_data]));
     if (playerWin) {
       setTimeout(() => {
-        setReelOneSymbols(winningOutcome[winningIndex].combination[0]);
-        setReelOneWinningLine(winningOutcome[winningIndex].winningLine);
-        setReelOnePayout(winningOutcome[winningIndex].payout);
+        setReelOneSymbols(outcome.combination[0]);
+        setReelOneWinningLine(outcome.winningLine);
+        setReelOnePayout(outcome.payout);
         new Audio(reelSound).play();
         setReelOneSpinning(false);
       }, 1000);
@@ -81,16 +88,21 @@ function App() {
   const startSecondReel = (
     playerWin: boolean,
     loosingIndex: number,
-    winningIndex: number
+    winningIndex: number,
+    outcome: {
+      combination: string[][];
+      winningLine: number[];
+      payout: number;
+    }
   ) => {
     setReelTwoSpinning(true);
 
     setReelTwoSymbols(shuffleArray([...symbols_data]));
     if (playerWin) {
       setTimeout(() => {
-        setReelTwoSymbols(winningOutcome[winningIndex].combination[1]);
-        setReelTwoWinningLine(winningOutcome[winningIndex].winningLine);
-        setReelTwoPayout(winningOutcome[winningIndex].payout);
+        setReelTwoSymbols(outcome.combination[1]);
+        setReelTwoWinningLine(outcome.winningLine);
+        setReelTwoPayout(outcome.payout);
         new Audio(reelSound).play();
         setReelTwoSpinning(false);
       }, 1500);
@@ -108,28 +120,29 @@ function App() {
   const startThirdReel = (
     playerWin: boolean,
     loosingIndex: number,
-    winningIndex: number
+    winningIndex: number,
+    outcome: {
+      combination: string[][];
+      winningLine: number[];
+      payout: number;
+    }
   ) => {
     setReelThreeSpinning(true);
     setReelThreeSymbols(shuffleArray([...symbols_data]));
     if (playerWin) {
       setTimeout(() => {
-        setReelThreeSymbols(winningOutcome[winningIndex].combination[2]);
-        setReelThreeWinningLine(winningOutcome[winningIndex].winningLine);
-        setReelThreePayout(winningOutcome[winningIndex].payout);
+        setReelThreeSymbols(outcome.combination[2]);
+        setReelThreeWinningLine(outcome.winningLine);
+        setReelThreePayout(outcome.payout);
         new Audio(thirdReelSound).play();
         setReelThreeSpinning(false);
         setStartClicked(false);
         setTimeout(() => {
-          setPayoutMessage(
-            "You won " + winningOutcome[winningIndex].payout * bet + " coins!"
-          );
+          setPayoutMessage("You won " + outcome.payout * bet + " coins!");
 
           new Audio(winSound).play();
           setWinningClass(true);
-          setCredits(
-            (curr) => curr + winningOutcome[winningIndex].payout * bet
-          );
+          setCredits((curr) => curr + outcome.payout * bet);
         }, 500);
       }, 2000);
     } else {
@@ -148,23 +161,49 @@ function App() {
     setStartClicked(true);
     setCredits((curr) => curr - bet);
     setWinningClass(false);
-    const winOdd = Math.trunc(Math.random() * 3);
-    let playerWin = false;
-    let loosingOutcomeIndex = 0;
-    let winningOutcomeIndex = 0;
-    if (winOdd === 1) {
-      playerWin = true;
-      winningOutcomeIndex = Math.trunc(Math.random() * winningOutcome.length);
-    }
-    if (!playerWin) {
-      loosingOutcomeIndex = Math.trunc(Math.random() * loosingOutcome.length);
-    }
+    const { playerWin, loosingOutcomeIndex, winningOutcomeIndex, outcome } =
+      oddsGenerator();
+    // const winOdd = Math.trunc(Math.random() * 3);
+    // let playerWin = false;
+    // let loosingOutcomeIndex = 0;
+    // let winningOutcomeIndex = 0;
+    // if (winOdd === 1) {
+    //   playerWin = true;
+    //   winningOutcomeIndex = Math.trunc(Math.random() * winningOutcome.length);
+    // }
+    // if (!playerWin) {
+    //   loosingOutcomeIndex = Math.trunc(Math.random() * loosingOutcome.length);
+    // }
     new Audio(reelBg).play();
-    startFirstReel(playerWin, loosingOutcomeIndex, winningOutcomeIndex);
-    startSecondReel(playerWin, loosingOutcomeIndex, winningOutcomeIndex);
-    startThirdReel(playerWin, loosingOutcomeIndex, winningOutcomeIndex);
+    startFirstReel(
+      playerWin,
+      loosingOutcomeIndex,
+      winningOutcomeIndex,
+      outcome
+    );
+    startSecondReel(
+      playerWin,
+      loosingOutcomeIndex,
+      winningOutcomeIndex,
+      outcome
+    );
+    startThirdReel(
+      playerWin,
+      loosingOutcomeIndex,
+      winningOutcomeIndex,
+      outcome
+    );
   };
 
+  useMemo(() => {
+    if (reelThreeSpinning) {
+      setBtnDisabled(true);
+    } else {
+      setTimeout(() => {
+        setBtnDisabled(false);
+      }, 500);
+    }
+  }, [reelThreeSpinning]);
   return (
     <div className={classes.wrapper}>
       <div className={classes.app_display}>
@@ -201,7 +240,7 @@ function App() {
             <button
               className={classes.btn_start}
               onClick={onStartHandler}
-              disabled={reelThreeSpinning ? true : false}
+              disabled={btnDisabled}
             >
               <FontAwesomeIcon
                 icon={faRotate}
