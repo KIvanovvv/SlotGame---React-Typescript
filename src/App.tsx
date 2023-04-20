@@ -8,14 +8,16 @@ import {
   winSound,
 } from "./assets/sounds/index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRotate } from "@fortawesome/free-solid-svg-icons";
 import {
-  loosingOutcome,
-  symbols_data,
-  winningOutcome,
-} from "./resultStore/store";
+  faRotate,
+  faTriangleExclamation,
+  faCircleInfo,
+} from "@fortawesome/free-solid-svg-icons";
+import { loosingOutcome, symbols_data } from "./resultStore/store";
 import BetPicker from "./components/BetPicker/BetPicker";
 import oddsGenerator from "./utils/oddsGenerator";
+import shuffleArray from "./utils/shuffle";
+import InfoModal from "./components/InfoModal/InfoModal";
 
 function App() {
   const [reelOneSymbols, setReelOneSymbols] = useState(
@@ -39,25 +41,19 @@ function App() {
   const [startClicked, setStartClicked] = useState(false);
   const [payoutMessage, setPayoutMessage] = useState("Spin the reels");
   const [winningClass, setWinningClass] = useState(false);
-  const [credits, setCredits] = useState(1000);
+  const [credits, setCredits] = useState(101);
+  const [insufficientCredits, setInsufficientCredits] = useState(false);
   const [bet, setBet] = useState(1);
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const betHandler = (bet: number) => {
     setBet(bet);
   };
-
-  function shuffleArray(array: string[]) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
   const startFirstReel = (
     playerWin: boolean,
     loosingIndex: number,
-    winningIndex: number,
+
     outcome: {
       combination: string[][];
       winningLine: number[];
@@ -88,7 +84,6 @@ function App() {
   const startSecondReel = (
     playerWin: boolean,
     loosingIndex: number,
-    winningIndex: number,
     outcome: {
       combination: string[][];
       winningLine: number[];
@@ -120,7 +115,7 @@ function App() {
   const startThirdReel = (
     playerWin: boolean,
     loosingIndex: number,
-    winningIndex: number,
+
     outcome: {
       combination: string[][];
       winningLine: number[];
@@ -158,41 +153,21 @@ function App() {
     }
   };
   const onStartHandler = () => {
+    if (credits < bet) {
+      setInsufficientCredits(true);
+      setTimeout(() => {
+        setInsufficientCredits(false);
+      }, 1500);
+      return;
+    }
     setStartClicked(true);
     setCredits((curr) => curr - bet);
     setWinningClass(false);
-    const { playerWin, loosingOutcomeIndex, winningOutcomeIndex, outcome } =
-      oddsGenerator();
-    // const winOdd = Math.trunc(Math.random() * 3);
-    // let playerWin = false;
-    // let loosingOutcomeIndex = 0;
-    // let winningOutcomeIndex = 0;
-    // if (winOdd === 1) {
-    //   playerWin = true;
-    //   winningOutcomeIndex = Math.trunc(Math.random() * winningOutcome.length);
-    // }
-    // if (!playerWin) {
-    //   loosingOutcomeIndex = Math.trunc(Math.random() * loosingOutcome.length);
-    // }
+    const { playerWin, loosingOutcomeIndex, outcome } = oddsGenerator();
     new Audio(reelBg).play();
-    startFirstReel(
-      playerWin,
-      loosingOutcomeIndex,
-      winningOutcomeIndex,
-      outcome
-    );
-    startSecondReel(
-      playerWin,
-      loosingOutcomeIndex,
-      winningOutcomeIndex,
-      outcome
-    );
-    startThirdReel(
-      playerWin,
-      loosingOutcomeIndex,
-      winningOutcomeIndex,
-      outcome
-    );
+    startFirstReel(playerWin, loosingOutcomeIndex, outcome);
+    startSecondReel(playerWin, loosingOutcomeIndex, outcome);
+    startThirdReel(playerWin, loosingOutcomeIndex, outcome);
   };
 
   useMemo(() => {
@@ -204,10 +179,32 @@ function App() {
       }, 500);
     }
   }, [reelThreeSpinning]);
+
+  const onInfoHandler = () => {
+    setShowInfo(true);
+  };
+
   return (
     <div className={classes.wrapper}>
+      {showInfo && <InfoModal bet={bet}/>}
+      {insufficientCredits && (
+        <div className={classes.no_credits}>
+          <FontAwesomeIcon
+            icon={faTriangleExclamation}
+            className={classes.triangle_icon}
+          />
+          <p>Insufficient credits</p>{" "}
+        </div>
+      )}
       <div className={classes.app_display}>
-        <p className={classes.payout}>{payoutMessage}</p>
+        <div className={classes.header}>
+          <p className={classes.payout}>{payoutMessage}</p>
+          <FontAwesomeIcon
+            icon={faCircleInfo}
+            className={classes.info}
+            onClick={onInfoHandler}
+          />
+        </div>
         <div className={classes.app}>
           <div className={classes.container}>
             <Reel
