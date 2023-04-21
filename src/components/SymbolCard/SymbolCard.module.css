@@ -3,8 +3,6 @@
   justify-content: center;
   align-items: center;
   background-color: purple;
-  /* border-left: 1px solid gold;
-  border-right: 1px solid gold; */
   overflow: hidden;
   min-width: 100px;
   min-height: 100px;
@@ -19,8 +17,47 @@
   animation: winning 1.2s 2 linear;
 }
 .winning {
-  background-color: rgb(35, 219, 35);
+  background-color: black;
+  animation: animateBg 0.4s infinite linear;
+  background: center top;
+  background-size: cover;
 }
+@keyframes animateBg {
+  0% {
+    background-image: url("../../assets/winningSprites/01.jpg");
+  }
+  10% {
+    background-image: url("../../assets/winningSprites/02.jpg");
+  }
+  20% {
+    background-image: url("../../assets/winningSprites/03.jpg");
+  }
+  30% {
+    background-image: url("../../assets/winningSprites/04.jpg");
+  }
+  40% {
+    background-image: url("../../assets/winningSprites/05.jpg");
+  }
+  50% {
+    background-image: url("../../assets/winningSprites/06.jpg");
+  }
+  60% {
+    background-image: url("../../assets/winningSprites/07.jpg");
+  }
+  70% {
+    background-image: url("../../assets/winningSprites/08.jpg");
+  }
+  80% {
+    background-image: url("../../assets/winningSprites/09.jpg");
+  }
+  90% {
+    background-image: url("../../assets/winningSprites/10.jpg");
+  }
+  100% {
+    background-image: url("../../assets/winningSprites/11.jpg");
+  }
+}
+
 @keyframes winning {
   0% {
     transform: rotate(0deg);

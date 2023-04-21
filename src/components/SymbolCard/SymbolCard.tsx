@@ -10,6 +10,7 @@ export const SymbolCard: React.FC<{
 }> = (props) => {
   const [imgClass, setImgClass] = useState(classes.img);
   const [containerClass, setContainerClass] = useState(classes.container);
+
   const addingWinningClass = () => {
     if (props.winMark) {
       setContainerClass(

@@ -46,6 +46,12 @@ function App() {
   const [bet, setBet] = useState(1);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [sound, setSound] = useState({
+    reelSound,
+    reelBg,
+    thirdReelSound,
+    winSound,
+  });
 
   const betHandler = (bet: number) => {
     setBet(bet);
@@ -68,7 +74,7 @@ function App() {
         setReelOneSymbols(outcome.combination[0]);
         setReelOneWinningLine(outcome.winningLine);
         setReelOnePayout(outcome.payout);
-        new Audio(reelSound).play();
+        new Audio(sound.reelSound).play();
         setReelOneSpinning(false);
       }, 1000);
     } else {
@@ -76,7 +82,7 @@ function App() {
         setReelOneSymbols(loosingOutcome[loosingIndex].combination[0]);
         setReelOneWinningLine(loosingOutcome[loosingIndex].winningLine);
         setReelOnePayout(loosingOutcome[loosingIndex].payout);
-        new Audio(reelSound).play();
+        new Audio(sound.reelSound).play();
         setReelOneSpinning(false);
       }, 1000);
     }
@@ -98,7 +104,7 @@ function App() {
         setReelTwoSymbols(outcome.combination[1]);
         setReelTwoWinningLine(outcome.winningLine);
         setReelTwoPayout(outcome.payout);
-        new Audio(reelSound).play();
+        new Audio(sound.reelSound).play();
         setReelTwoSpinning(false);
       }, 1500);
     } else {
@@ -106,7 +112,7 @@ function App() {
         setReelTwoSymbols(loosingOutcome[loosingIndex].combination[1]);
         setReelTwoWinningLine(loosingOutcome[loosingIndex].winningLine);
         setReelTwoPayout(loosingOutcome[loosingIndex].payout);
-        new Audio(reelSound).play();
+        new Audio(sound.reelSound).play();
         setReelTwoSpinning(false);
       }, 1500);
     }
@@ -129,13 +135,13 @@ function App() {
         setReelThreeSymbols(outcome.combination[2]);
         setReelThreeWinningLine(outcome.winningLine);
         setReelThreePayout(outcome.payout);
-        new Audio(thirdReelSound).play();
+        new Audio(sound.thirdReelSound).play();
         setReelThreeSpinning(false);
         setStartClicked(false);
         setTimeout(() => {
           setPayoutMessage("You won " + outcome.payout * bet + " coins!");
 
-          new Audio(winSound).play();
+          new Audio(sound.winSound).play();
           setWinningClass(true);
           setCredits((curr) => curr + outcome.payout * bet);
         }, 500);
@@ -145,7 +151,7 @@ function App() {
         setReelThreeSymbols(loosingOutcome[loosingIndex].combination[2]);
         setReelThreeWinningLine(loosingOutcome[loosingIndex].winningLine);
         setReelThreePayout(loosingOutcome[loosingIndex].payout);
-        new Audio(thirdReelSound).play();
+        new Audio(sound.thirdReelSound).play();
         setReelThreeSpinning(false);
         setStartClicked(false);
         setPayoutMessage("Good luck!");
@@ -164,7 +170,7 @@ function App() {
     setCredits((curr) => curr - bet);
     setWinningClass(false);
     const { playerWin, loosingOutcomeIndex, outcome } = oddsGenerator();
-    new Audio(reelBg).play();
+    new Audio(sound.reelBg).play();
     startFirstReel(playerWin, loosingOutcomeIndex, outcome);
     startSecondReel(playerWin, loosingOutcomeIndex, outcome);
     startThirdReel(playerWin, loosingOutcomeIndex, outcome);

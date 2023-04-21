@@ -75,24 +75,38 @@ const BetPicker: React.FC<{
 
   return (
     <div className={classes.container}>
-      <Multiplier handleMultipliers={handleMultipliers} name="x1" active={x1} />
-      <Multiplier handleMultipliers={handleMultipliers} name="x2" active={x2} />
-      <Multiplier handleMultipliers={handleMultipliers} name="x5" active={x5} />
-      <Multiplier
-        handleMultipliers={handleMultipliers}
-        name="x10"
-        active={x10}
-      />
-      <Multiplier
-        handleMultipliers={handleMultipliers}
-        name="x20"
-        active={x20}
-      />
-      <Multiplier
-        handleMultipliers={handleMultipliers}
-        name="x100"
-        active={x100}
-      />
+      <div className={classes.multiplier_container} >
+        <Multiplier
+          handleMultipliers={handleMultipliers}
+          name="x1"
+          active={x1}
+        />
+        <Multiplier
+          handleMultipliers={handleMultipliers}
+          name="x2"
+          active={x2}
+        />
+        <Multiplier
+          handleMultipliers={handleMultipliers}
+          name="x5"
+          active={x5}
+        />
+        <Multiplier
+          handleMultipliers={handleMultipliers}
+          name="x10"
+          active={x10}
+        />
+        <Multiplier
+          handleMultipliers={handleMultipliers}
+          name="x20"
+          active={x20}
+        />
+        <Multiplier
+          handleMultipliers={handleMultipliers}
+          name="x100"
+          active={x100}
+        />
+      </div>
       <p className={classes.credit}>1 spin = {props.bet} credit</p>
     </div>
   );
