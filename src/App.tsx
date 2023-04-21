@@ -41,7 +41,7 @@ function App() {
   const [startClicked, setStartClicked] = useState(false);
   const [payoutMessage, setPayoutMessage] = useState("Spin the reels");
   const [winningClass, setWinningClass] = useState(false);
-  const [credits, setCredits] = useState(101);
+  const [credits, setCredits] = useState(1000);
   const [insufficientCredits, setInsufficientCredits] = useState(false);
   const [bet, setBet] = useState(1);
   const [btnDisabled, setBtnDisabled] = useState(false);
@@ -186,7 +186,7 @@ function App() {
 
   return (
     <div className={classes.wrapper}>
-      {showInfo && <InfoModal bet={bet}/>}
+      {showInfo && <InfoModal bet={bet} setShowInfo={setShowInfo} />}
       {insufficientCredits && (
         <div className={classes.no_credits}>
           <FontAwesomeIcon
@@ -198,12 +198,16 @@ function App() {
       )}
       <div className={classes.app_display}>
         <div className={classes.header}>
-          <p className={classes.payout}>{payoutMessage}</p>
-          <FontAwesomeIcon
-            icon={faCircleInfo}
-            className={classes.info}
-            onClick={onInfoHandler}
-          />
+          <div className={classes.payout_container}>
+            <p className={classes.payout}>{payoutMessage}</p>
+          </div>
+          <div className={classes.info_container}>
+            <FontAwesomeIcon
+              icon={faCircleInfo}
+              className={classes.info}
+              onClick={onInfoHandler}
+            />
+          </div>
         </div>
         <div className={classes.app}>
           <div className={classes.container}>

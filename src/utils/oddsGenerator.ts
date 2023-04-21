@@ -13,7 +13,7 @@ const oddsGenerator = () => {
     winningLine: [0],
     payout: 0,
   };
-  const winOdd = Math.trunc(Math.random() * 8000);
+  const winOdd = Math.trunc(Math.random() * 3000);
   if (winOdd <= 500 || winOdd > 1000) {
     playerWin = false;
     loosingOutcomeIndex = Math.trunc(Math.random() * loosingOutcome.length);
@@ -72,7 +72,6 @@ const oddsGenerator = () => {
     );
     outcome = winningCombinations[winningOutcomeIndex];
   }
-  console.log(winOdd);
   return { playerWin, loosingOutcomeIndex, winningOutcomeIndex, outcome };
 };
 
